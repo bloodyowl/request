@@ -2,7 +2,7 @@
   "name" : "bloody-request",
   "repository" : "https://github.com/bloodyowl/request",
   "issues" : "https://github.com/bloodyowl/request/issues",
-  "version" : "0.1.0",
+  "version" : "0.1.1",
   "scripts": {
     "test": "tape test/*.js"
   },
