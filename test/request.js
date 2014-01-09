@@ -211,7 +211,7 @@ tape("request.load (url, GET)", function(test){
   pro.then(function(value){
     firstXHR = value
     test.ok(value instanceof XMLHttpRequest, "passes XMLHttpRequest")
-    test.equal(value.responseText, "bar", "response is right")
+    test.equal(value.responseText, "File not found. :(", "response is right")
     test.equal(value.status, 200, "status is right")
   })
   .then(function(){
@@ -236,9 +236,10 @@ tape("request.load (error, POST)", function(test){
   pro.then(function(){
     test.fail()
   }, function(value){
+    console.log(value)
     test.ok(value instanceof XMLHttpRequest, "passes XMLHttpRequest")
-    test.equal(value.responseText, "bar", "response is right")
-    test.equal(value.status, 404, "status is right")
+    test.equal(value.responseText, "", "response is right")
+    test.ok(value.status == 405 || value.status == 0 /* local tests */, "status is right")
   })
 
 })
