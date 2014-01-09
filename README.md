@@ -29,7 +29,7 @@ Creates a new request, accepts `params` as an object, or a simple `url` string w
 
 ### `request.destroy()`
 
-If a XHR is currently loading, aborts it. 
+Removes `this.xhr` reference. 
 
 ### `request.load() -> promise`
 
