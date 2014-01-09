@@ -24,6 +24,10 @@ module.exports = klass.extend({
   },
   destructor : function(){
     if(!this.xhr) return
+    if(this.xhr.readyState != 4){
+      this.xhr.aborted = true
+      this.xhr.abort()
+    }
     this.xhr = null
   },
   _createXHR : function(){
@@ -42,8 +46,9 @@ module.exports = klass.extend({
   _createXHRCallback : function(boundPromise){
     return function(){
       var readyState = this.readyState
-        , status = this.status
-      if(readyState != 4) return
+        , status
+      if(readyState != 4 || this.aborted) return
+      status = this.status
       if(status >= 200 && status < 300 || status == 304) {
         return boundPromise.fulfill(this)
       }
@@ -66,6 +71,7 @@ module.exports = klass.extend({
     }
   },
   load : function(){
+    this.destroy()
     var xhr = this._createXHR()
       , xhrPromise = promise.create()
       , callback = this._createXHRCallback(xhrPromise)
