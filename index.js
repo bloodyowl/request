@@ -24,8 +24,10 @@ module.exports = klass.extend({
   },
   destructor : function(){
     if(!this.xhr) return
-    this.xhr.aborted = true
-    this.xhr.abort()
+    if(this.xhr.readyState != 4){
+      this.xhr.aborted = true
+      this.xhr.abort()
+    }
     this.xhr = null
   },
   _createXHR : function(){
