@@ -50,7 +50,7 @@ tape("request._options", function(test){
 
 tape("request._createXHR", function(test){
   
-  test.equal(request._createXHR().status, 0, "returns a new request")
+  test.ok(request._createXHR() instanceof XMLHttpRequest, "returns a new request")
   test.end()
   
 })
