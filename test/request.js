@@ -211,7 +211,6 @@ tape("request.load (error, POST)", function(test){
   pro.then(function(){
     test.fail()
   }, function(value){
-    console.log(value)
     test.ok(({}).isPrototypeOf.call(XMLHttpRequest.prototype, value), "passes XMLHttpRequest")
     test.equal(value.responseText, "", "response is right")
     test.ok(value.status == 405 || value.status == 0 /* local tests */, "status is right")
