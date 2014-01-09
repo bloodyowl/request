@@ -8,7 +8,7 @@ function isXHR(value){
     return XMLHttpRequest.prototype.isPrototypeOf(value)
   }
   // ie7 crap
-  return value && typeof value.open == "function"
+  return value && typeof value.open == "object"
 }
 
 tape("request.create", function(test){
