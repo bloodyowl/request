@@ -24,6 +24,7 @@ module.exports = klass.extend({
   },
   destructor : function(){
     if(!this.xhr) return
+    this.xhr.aborted = true
     this.xhr.abort()
     this.xhr = null
   },
