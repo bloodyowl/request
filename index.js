@@ -44,7 +44,7 @@ module.exports = klass.extend({
     return function(){
       var readyState = this.readyState
         , status = this.status
-      if(readyState != 4) return
+      if(readyState != 4 || this.aborted) return
       if(status >= 200 && status < 300 || status == 304) {
         return boundPromise.fulfill(this)
       }

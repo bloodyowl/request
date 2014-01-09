@@ -2,6 +2,15 @@ var tape = require("tape")
   , promise = require("bloody-promise")
   , request = require("../")
 
+
+function isXHR(value){
+  if(XMLHttpRequest && XMLHttpRequest.prototype) {
+    return XMLHttpRequest.prototype.isPrototypeOf(value)
+  }
+  // ie7 crap
+  return value && typeof value.open == "function"
+}
+
 tape("request.create", function(test){
   
   var req = request.create("url")
@@ -50,7 +59,7 @@ tape("request._options", function(test){
 
 tape("request._createXHR", function(test){
   
-  test.ok(XMLHttpRequest.prototype.isPrototypeOf(request._createXHR()), "returns a new request")
+  test.ok(isXHR(request._createXHR()), "returns a new request")
   test.end()
   
 })
@@ -186,7 +195,7 @@ tape("request.load (url, GET)", function(test){
     , pro = req.load()
 
   pro.then(function(value){
-    test.ok(XMLHttpRequest.prototype.isPrototypeOf(value), "passes XMLHttpRequest")
+    test.ok(isXHR(value), "passes XMLHttpRequest")
     test.equal(value.responseText, "File not found. :(", "response is right")
     test.equal(value.status, 200, "status is right")
   })
@@ -212,7 +221,7 @@ tape("request.load (error, POST)", function(test){
   pro.then(function(){
     test.fail()
   }, function(value){
-    test.ok(XMLHttpRequest.prototype.isPrototypeOf(value), "passes XMLHttpRequest")
+    test.ok(isXHR(value), "passes XMLHttpRequest")
     test.equal(value.responseText, "", "response is right")
     test.ok(value.status == 405 || value.status == 0 /* local tests */, "status is right")
   })
