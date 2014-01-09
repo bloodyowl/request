@@ -11,7 +11,7 @@ $ npm install bloody-request
 ## Require
 
 ```javascript
-var promise = require("bloody-request")
+var request = require("bloody-request")
 ```
 
 ## API
