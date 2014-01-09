@@ -1,0 +1,55 @@
+{
+  "name" : "bloody-request",
+  "repository" : "https://github.com/bloodyowl/request",
+  "issues" : "https://github.com/bloodyowl/request/issues",
+  "version" : "0.1.0",
+  "scripts": {
+    "test": "tape test/*.js"
+  },
+  "dependencies": {
+    "bloody-promise": "~0.2.1",
+    "bloody-class": "~1.1.0"
+  },
+  "devDependencies": {
+    "tape": "~2.3.2"
+  },
+  "testling": {
+    "files": "test/*.js",
+    "server" : "testling/server.js",
+    "browsers": {
+      "ie": [
+        7,
+        8,
+        9
+      ],
+      "firefox": [
+        22,
+        23,
+        24,
+        25
+      ],
+      "chrome": [
+        28,
+        29,
+        30,
+        31
+      ],
+      "safari": [
+        4,
+        5.1,
+        6
+      ],
+      "opera": [
+        10,
+        11,
+        12
+      ],
+      "iphone": [
+        6
+      ],
+      "ipad": [
+        6
+      ]
+    }
+  }
+}
