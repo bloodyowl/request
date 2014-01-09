@@ -1,4 +1,4 @@
-# promise
+# request
 
 [![browser support](https://ci.testling.com/bloodyowl/request.png)](https://ci.testling.com/bloodyowl/request)
 
