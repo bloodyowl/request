@@ -178,29 +178,6 @@ tape("request._resolveUrl", function(test){
 })
 
 tape("request.load (url, GET)", function(test){
-    
-  test.plan(4)
-  
-  var req = request.create("foo")
-    , pro = req.load()
-    , firstXHR
-
-  pro.then(function(value){
-    firstXHR = value
-    test.ok(value instanceof XMLHttpRequest, "passes XMLHttpRequest")
-    test.equal(value.responseText, "bar", "response is right")
-    test.equal(value.status, 200, "status is right")
-  })
-  .then(function(){
-    return req.load()
-  })
-  .then(function(value){
-    test.notEqual(value, firstXHR, "creates a new XHR at .load")
-  })
-  
-})
-
-tape("request.load (url, GET)", function(test){
 
   test.plan(4)
 
