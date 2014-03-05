@@ -1,8 +1,11 @@
 {
-  "name" : "bloody-request",
-  "repository" : "https://github.com/bloodyowl/request",
-  "issues" : "https://github.com/bloodyowl/request/issues",
-  "version" : "0.1.1",
+  "name": "bloody-request",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bloodyowl/request"
+  },
+  "issues": "https://github.com/bloodyowl/request/issues",
+  "version": "0.1.1",
   "scripts": {
     "test": "tape test/*.js"
   },
@@ -15,7 +18,7 @@
   },
   "testling": {
     "files": "test/*.js",
-    "server" : "testling/server.js",
+    "server": "testling/server.js",
     "browsers": {
       "ie": [
         7,
@@ -51,5 +54,16 @@
         6
       ]
     }
-  }
+  },
+  "description": "[![browser support](https://ci.testling.com/bloodyowl/request.png)](https://ci.testling.com/bloodyowl/request)",
+  "bugs": {
+    "url": "https://github.com/bloodyowl/request/issues"
+  },
+  "homepage": "https://github.com/bloodyowl/request",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "author": "bloodyowl",
+  "license": "MIT"
 }
