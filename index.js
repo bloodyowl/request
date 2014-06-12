@@ -81,9 +81,12 @@ module.exports = klass.extend({
       }
     }
   },
+  promise : function(fn){
+    return promise.create(fn)
+  },
   load : function(){
     var req = this
-    return promise.create(function(resolve, reject){
+    return req.promise(function(resolve, reject){
       var xhr = new XMLHttpRequest()
       var callback = createCallback(resolve, reject)
       var url = resolveURL(req.url, req.queryString)
@@ -112,5 +115,6 @@ module.exports = klass.extend({
   post : createShorthand("POST"),
   del : createShorthand("DELETE"),
   put : createShorthand("PUT"),
-  patch : createShorthand("PATCH")
+  options : createShorthand("OPTIONS"),
+  head : createShorthand("HEAD")
 })
