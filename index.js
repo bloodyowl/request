@@ -6,7 +6,7 @@ var configurable = {
   method : 1,
   url : 1,
   queryString : 1,
-  data : 1,
+  body : 1,
   withCredentials : 1
 }
 
@@ -45,11 +45,11 @@ function resolveURL(url, queryString){
 }
 
 function createShorthand(method) {
-  return function(options, data){
+  return function(options, body){
     if(typeof options == "string") {
       options = {
         url : options,
-        data : arguments.length > 1 ? data : null
+        body : arguments.length > 1 ? body : null
       }
     }
     options.method = method
@@ -66,7 +66,7 @@ module.exports = klass.extend({
   method : "GET",
   url : null,
   queryString : null,
-  data : null,
+  body : null,
   withCredentials : false,
   constructor : function(options){
     var key
@@ -100,7 +100,7 @@ module.exports = klass.extend({
       }
       xhr.withCredentials = Boolean(req.withCredentials)
       xhr.onreadystatechange = callback
-      xhr.send(req.data)
+      xhr.send(req.body)
     })
   },
   get : function(options){
