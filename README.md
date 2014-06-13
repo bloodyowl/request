@@ -2,19 +2,19 @@
 
 [![browser support](https://ci.testling.com/bloodyowl/request.png)](https://ci.testling.com/bloodyowl/request)
 
-## Install
+## install
 
-```
+```sh
 $ npm install bloody-request
 ```
 
-## Require
+## require
 
 ```javascript
 var request = require("bloody-request")
 ```
 
-## API
+## api
 
 ### `request.create(params||url) > r`
 
