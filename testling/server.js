@@ -1,7 +1,6 @@
 var http = require("http")
 var port = parseInt(process.env.PORT, 10)
 var server = http.createServer(function(req, res){
-  console.log(req.url)
   switch (req.url) {
     case "/ok":
       res.statusCode = 200
