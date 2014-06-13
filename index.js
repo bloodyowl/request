@@ -114,7 +114,5 @@ module.exports = klass.extend({
   },
   post : createShorthand("POST"),
   del : createShorthand("DELETE"),
-  put : createShorthand("PUT"),
-  options : createShorthand("OPTIONS"),
-  head : createShorthand("HEAD")
+  put : createShorthand("PUT")
 })
