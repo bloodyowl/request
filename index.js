@@ -1,94 +1,120 @@
 var promise = require("bloody-promise")
-  , klass = require("bloody-class")
-  , _hasOwnProperty = {}.hasOwnProperty
+var klass = require("bloody-class")
+var hasOwn = Object.prototype.hasOwnProperty
+var configurable = {
+  headers : 1,
+  method : 1,
+  url : 1,
+  queryString : 1,
+  body : 1,
+  withCredentials : 1
+}
 
+function isStatusOk(status){
+  return status >= 200 && status < 300 || status == 304
+}
 
-function each(object, callback, thisValue){
-  var key
-  if(!object) return
-  for(key in object) {
-    if(!_hasOwnProperty.call(object, key)) continue
-    callback.call(thisValue, object[key], key, object)
+function createCallback(resolve, reject){
+  return function(){
+    var readyState = this.readyState
+    var status
+    if(readyState != 4) {
+      return
+    }
+    if(isStatusOk(this.status)) {
+      resolve(this)
+      return
+    }
+    reject(this)
+  }
+}
+
+function resolveURL(url, queryString){
+  var index
+  if(queryString == null) {
+    return url
+  }
+  index = url.indexOf("?")
+  if(index == -1) {
+      return url + "?" + queryString
+  }
+  if(index == url.length - 1) {
+    return url + queryString
+  }
+  return url + "&" + queryString
+}
+
+function createShorthand(method) {
+  return function(options, body){
+    if(typeof options == "string") {
+      options = {
+        url : options,
+        body : arguments.length > 1 ? body : null
+      }
+    }
+    options.method = method
+    return this.create(options).load()
   }
 }
 
 module.exports = klass.extend({
-  constructor : function(object){
-    if(typeof object == "string") {
-      object = {url:object}
-    }
-    each(object, this._options, this)
-  },
-  _options : function(item, key){
-    this[key] = item
-  },
-  destructor : function(){
-    if(!this.xhr) return
-    if(this.xhr.readyState != 4){
-      this.xhr.aborted = true
-      this.xhr.abort()
-    }
-    this.xhr = null
-  },
-  _createXHR : function(){
-    return new XMLHttpRequest()
-  },
-  _setHeader: function(item, key){
-    this.setRequestHeader(key, item)
-  },
-  _setHeaders : function(xhr){
-    if(this.method == "POST") {
-      xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest")
-      xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded")
-    }
-    each(this.headers, this._setHeader, xhr)
-  },
-  _createXHRCallback : function(boundPromise){
-    return function(){
-      var readyState = this.readyState
-        , status
-      if(readyState != 4 || this.aborted) return
-      status = this.status
-      if(status >= 200 && status < 300 || status == 304) {
-        return boundPromise.fulfill(this)
-      }
-      if((status < 200 || 300 < status) && status != 304) {
-        boundPromise.reject(this)
-      }
-    }
-  },
-  _resolveUrl : function(baseUrl, queryString){
-    if(!queryString) return baseUrl
-    switch(baseUrl.indexOf("?")) {
-      case -1:
-      return baseUrl + "?" + queryString
-      break
-      case baseUrl.length - 1:
-      return baseUrl + queryString
-      break
-      default:
-      return baseUrl + "&" + queryString
-    }
-  },
-  load : function(){
-    this.destroy()
-    var xhr = this._createXHR()
-      , xhrPromise = promise.create()
-      , callback = this._createXHRCallback(xhrPromise)
-      , url = this._resolveUrl(this.url, this.queryString)
-    this.xhr = xhr
-    xhr.open(this.method, url, true)
-    this._setHeaders(xhr)
-    xhr.withCredentials = !!this.withCredentials
-    xhr.onreadystatechange = callback
-    xhr.send(this.data || null)
-    return xhrPromise
-  },
   headers : null,
+  defaultHeaders : {
+    "x-requested-with" : "XMLHttpRequest",
+    "content-type" : "application/x-www-form-urlencoded; charset=utf-8"
+  },
   method : "GET",
   url : null,
   queryString : null,
-  data : null,
+  body : null,
   withCredentials : false,
-  xhr : null
+  constructor : function(options){
+    var key
+    if(typeof options == "string") {
+      options = {
+        url : options
+      }
+    }
+    for(key in options) {
+      if(hasOwn.call(options, key) && configurable[key]) {
+        this[key] = options[key]
+      }
+    }
+  },
+  promise : function(fn){
+    return promise.create(fn)
+  },
+  load : function(){
+    var req = this
+    return req.promise(function(resolve, reject){
+      var xhr = new XMLHttpRequest()
+      var callback = createCallback(resolve, reject)
+      var url = resolveURL(req.url, req.queryString)
+      var key
+      xhr.open(req.method, url, true)
+      for(key in req.defaultHeaders) {
+        xhr.setRequestHeader(key, req.defaultHeaders[key])
+      }
+      for(key in req.headers) {
+        xhr.setRequestHeader(key, req.headers[key])
+      }
+      xhr.withCredentials = Boolean(req.withCredentials)
+      xhr.onreadystatechange = callback
+      xhr.send(req.body)
+    })
+  },
+  get : function(options){
+    if(typeof options == "string") {
+      options = {
+        url : options
+      }
+    }
+    options.method = "GET"
+    return this.create(options).load()
+  },
+  post : createShorthand("POST"),
+  del : createShorthand("DELETE"),
+  put : createShorthand("PUT"),
+  options : createShorthand("OPTIONS"),
+  head : createShorthand("HEAD")
 })
