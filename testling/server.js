@@ -12,9 +12,7 @@ var server = http.createServer(function(req, res){
       if(req.method == "POST") {
         res.statusCode = 405
         res.setHeader("Content-Type", "text/plain")
-        req.on("end", function(){
-          res.end("")
-        })
+        res.end("")
         return
       }
       req.statusCode = 200
