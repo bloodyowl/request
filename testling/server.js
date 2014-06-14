@@ -5,19 +5,15 @@ var server = http.createServer(function(req, res){
     case "/ok":
       res.statusCode = 200
       res.setHeader("Content-Type", "text/plain")
-      res.end("ok")
+      res.end("File not found. :(")
       return
     break
     case "/fail":
       if(req.method == "POST") {
         res.statusCode = 405
         res.setHeader("Content-Type", "text/plain")
-        var body = ""
-        req.on("data", function(chunk){
-          body += chunk
-        })
         req.on("end", function(){
-          res.end(body)
+          res.end("")
         })
         return
       }

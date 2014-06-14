@@ -46,7 +46,7 @@ tape("request.load (url, GET)", function(test){
 
   pro.then(function(value){
     test.ok(isXHR(value), "passes XMLHttpRequest")
-    test.equal(value.responseText, "ok", "response is right")
+    test.equal(value.responseText, "File not found. :(", "response is right")
     test.equal(value.status, 200, "status is right")
   })
   .then(function(){
@@ -74,7 +74,7 @@ tape("request.load (error, POST)", function(test){
     test.fail()
   }, function(value){
     test.ok(isXHR(value), "passes XMLHttpRequest")
-    test.equal(value.responseText, rand, "response is right")
+    test.equal(value.responseText, "", "response is right")
     test.equal(value.status, 405, "status is right")
   })
 
