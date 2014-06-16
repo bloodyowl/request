@@ -40,8 +40,6 @@ Promise is rejected if status < 200 or if status status > 300 (not 304). The XHR
 - `request.post(url || options[, body]) > promise`
 - `request.put(url[, body] || options) > promise`
 - `request.del(url[, body] || options) > promise`
-- `request.options(url[, body] || options) > promise`
-- `request.head(url[, body] || options) > promise`
 
 ### events
 
