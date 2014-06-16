@@ -5,7 +5,7 @@
     "url": "https://github.com/bloodyowl/request"
   },
   "issues": "https://github.com/bloodyowl/request/issues",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "scripts": {
     "test": "tape test/*.js"
   },
