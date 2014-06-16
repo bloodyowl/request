@@ -93,7 +93,12 @@ module.exports = klass.extend({
       var key
       xhr.open(req.method, url, true)
       for(key in req.defaultHeaders) {
-        if(req.headers[key] == null || req.defaultHeaders[key] == null) {
+        if(req.headers != null) {
+          if(req.headers.hasOwnProperty(key) && req.headers[key] == null) {
+            continue
+          }
+        }
+        if(req.defaultHeaders[key] == null) {
           continue
         }
         xhr.setRequestHeader(key, req.defaultHeaders[key])
