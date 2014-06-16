@@ -93,9 +93,15 @@ module.exports = klass.extend({
       var key
       xhr.open(req.method, url, true)
       for(key in req.defaultHeaders) {
+        if(req.headers[key] == null) {
+          continue
+        }
         xhr.setRequestHeader(key, req.defaultHeaders[key])
       }
       for(key in req.headers) {
+        if(req.headers[key] == null) {
+          continue
+        }
         xhr.setRequestHeader(key, req.headers[key])
       }
       xhr.withCredentials = Boolean(req.withCredentials)
