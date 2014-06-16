@@ -27,6 +27,7 @@ Creates a new request, accepts `params` as an object, or a simple `url` string w
 * `body` : string (default `null`)
 * `withCredentials` : boolean (default `false`)
 
+**NOTE** : a `{"headerName":null}` will cancel default headers.
 
 ### `request.load() > promise`
 
