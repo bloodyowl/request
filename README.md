@@ -50,3 +50,36 @@ returned promises have events you can listen to [bloodyowl/promise](http://githu
 - `.on("reject", cb)`
 - `.on("done", cb)`
 - `.on("error", cb)`
+
+## example
+
+```javascript
+var request = require("bloody-request")
+
+// if we are in a flux architecture
+var AppDispatcher = require("../dispatcher")
+var AppConstants = require("../constants")
+var ActionTypes = AppConstants.ActionTypes
+
+var API = {
+  getTweets : function(){
+    request.get(path.join(API_PATH, "tweets"))
+      .then(
+        function(xhr){
+          AppDispatcher.handleServerAction({
+            type : ActionTypes.RECEIVED_TWEETS_LIST,
+            response : JSON.parse(xhr.responseText)
+          })
+        },
+        function(xhr){
+          AppDispatcher.handleServerAction({
+            type : ActionTypes.DIDNT_RECEIVE_TWEETS_LIST,
+            status : xhr.status
+          })
+        }
+      )
+  }
+}
+
+module.exports = API
+```
