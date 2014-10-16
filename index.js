@@ -36,7 +36,7 @@ function resolveURL(url, queryString){
   }
   index = url.indexOf("?")
   if(index == -1) {
-      return url + "?" + queryString
+    return url + "?" + queryString
   }
   if(index == url.length - 1) {
     return url + queryString
