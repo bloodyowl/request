@@ -16,7 +16,7 @@ var request = require("bloody-request")
 
 ## api
 
-### var req = request.create(params || url)
+### var req = request.create(options || url)
 
 Creates a new request, accepts `params` as an object, or a simple `url` string with the default params.
 
@@ -39,8 +39,8 @@ Promise is rejected if status < 200 or if status status > 300 (not 304). The XHR
 
 - `var reqPromise = request.get(url || options)`
 - `var reqPromise = request.post(url || options[, body])`
-- `var reqPromise = request.put(url[, body] || options)`
-- `var reqPromise = request.del(url[, body] || options)`
+- `var reqPromise = request.put(url || options[, body])`
+- `var reqPromise = request.del(url || options[, body])`
 
 ### events
 
