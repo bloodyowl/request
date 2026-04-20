@@ -27,43 +27,43 @@ $ npm install --save @swan-io/request @swan-io/boxed
 ## Getting started
 
 ```ts
-import { Request, badStatusToError, emptyToError } from "@swan-io/request";
+import { Request, badStatusToError, emptyToError } from "@swan-io/request"
 
 // Regular case
-Request.make({ url: "/api/health", type: "text" }).onResolve(console.log);
+Request.make({ url: "/api/health", type: "text" }).onResolve(console.log)
 // Result.Ok({status: 200, ok: true, response: Option.Some("{\"ok\":true}")})
 
 // Timeout
 Request.make({ url: "/api/health", type: "text", timeout: 2000 }).onResolve(
   console.log,
-);
+)
 // Result.Error(TimeoutError)
 
 // Network error
-Request.make({ url: "/api/health", type: "text" }).onResolve(console.log);
+Request.make({ url: "/api/health", type: "text" }).onResolve(console.log)
 // Result.Error(NetworkError)
 
 // Custom response type
-Request.make({ url: "/api/health", type: "json" }).onResolve(console.log);
+Request.make({ url: "/api/health", type: "json" }).onResolve(console.log)
 // Result.Ok({status: 200, ok: true, response: Option.Some({ok: true})})
 
 // Handle empty response as an error
 Request.make({ url: "/api/health", type: "text" })
   .mapOkToResult(emptyToError)
-  .onResolve(console.log);
+  .onResolve(console.log)
 // Result.Error(EmptyResponseError)
 
 // Handle bad status as an error
 Request.make({ url: "/api/health", type: "text" })
   .mapOkToResult(badStatusToError)
-  .onResolve(console.log);
+  .onResolve(console.log)
 // Result.Error(BadStatusError)
 
 // Cancel request
 useEffect(() => {
-  const future = Request.make({ url: "/api/health", type: "text" });
-  return () => future.cancel();
-}, []);
+  const future = Request.make({ url: "/api/health", type: "text" })
+  return () => future.cancel()
+}, [])
 ```
 
 ## API

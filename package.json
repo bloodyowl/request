@@ -1,17 +1,16 @@
 {
-  "name": "@swan-io/request",
-  "version": "3.1.0",
-  "description": "Wrapper for XMLHttpRequest with better data-structures",
-  "main": "dist/Request.js",
-  "module": "dist/Request.mjs",
-  "source": "src/Request.ts",
-  "types": "dist/Request.d.ts",
-  "repository": "git@github.com:swan-io/request.git",
-  "author": "Matthias Le Brun <bloodyowl@swan.io>",
+  "name": "@bloodyowl/request",
+  "version": "3.2.0",
+  "description": "Wrapper for fetch with better data-structures",
+  "type": "module",
+  "main": "dist/src/Request.js",
+  "types": "dist/src/Request.d.ts",
+  "repository": "git@github.com:bloodyowl/request.git",
+  "author": "Matthias Le Brun <bloodyowl@icloud.com>",
   "license": "MIT",
   "files": [
     "LICENSE",
-    "dist",
+    "dist/src",
     "README.md"
   ],
   "keywords": [
@@ -25,25 +24,27 @@
     "registry": "https://registry.npmjs.org"
   },
   "prettier": {
-    "trailingComma": "all"
+    "trailingComma": "all",
+    "semi": false
   },
   "scripts": {
-    "build": "yarn clean && microbundle -f cjs,es",
+    "build": "bun clean && tsc",
     "clean": "rm -rf dist",
     "format": "prettier '**/*' -u -w",
-    "prepack": "yarn test && yarn build",
-    "test": "vitest run",
+    "prepack": "bun test && bun run build",
+    "test": "bun test",
     "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
-    "@swan-io/boxed": "^2.3.0",
+    "@bloodyowl/boxed": "^3.3.1",
+    "@types/bun": "1.3.11",
     "jsdom": "^24.0.0",
     "microbundle": "^0.15.1",
     "prettier": "^3.2.5",
-    "typescript": "^5.4.2",
-    "vitest": "^1.3.1"
+    "typescript": "^6.0.0"
   },
   "peerDependencies": {
-    "@swan-io/boxed": ">=2.2.1"
-  }
+    "@bloodyowl/boxed": ">=3.3.1"
+  },
+  "private": true
 }

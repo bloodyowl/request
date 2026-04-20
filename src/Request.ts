@@ -1,79 +1,79 @@
-import { Future, Option, Result } from "@swan-io/boxed";
+import { Future, Option, Result } from "@bloodyowl/boxed"
 
 // The type system allows us infer the response type from the requested `responseType`
-type ResponseType = "text" | "arraybuffer" | "blob" | "json";
+type ResponseType = "text" | "arraybuffer" | "blob" | "json"
 
 type ResponseTypeMap = {
-  text: string;
-  arraybuffer: ArrayBuffer;
-  blob: Blob;
-  json: unknown;
-};
+  text: string
+  arraybuffer: ArrayBuffer
+  blob: Blob
+  json: unknown
+}
 
-type Method = "GET" | "POST" | "OPTIONS" | "PATCH" | "PUT" | "DELETE";
+type Method = "GET" | "POST" | "OPTIONS" | "PATCH" | "PUT" | "DELETE"
 
 export class NetworkError extends Error {
-  url: string;
+  url: string
   constructor(url: string) {
-    super(`Request to ${url} failed`);
-    Object.setPrototypeOf(this, NetworkError.prototype);
-    this.name = "NetworkError";
-    this.url = url;
+    super(`Request to ${url} failed`)
+    Object.setPrototypeOf(this, NetworkError.prototype)
+    this.name = "NetworkError"
+    this.url = url
   }
 }
 
 export class TimeoutError extends Error {
-  url: string;
-  timeout: number | undefined;
+  url: string
+  timeout: number | undefined
   constructor(url: string, timeout?: number) {
     if (timeout == undefined) {
-      super(`Request to ${url} timed out`);
+      super(`Request to ${url} timed out`)
     } else {
-      super(`Request to ${url} timed out (> ${timeout}ms)`);
+      super(`Request to ${url} timed out (> ${timeout}ms)`)
     }
-    Object.setPrototypeOf(this, TimeoutError.prototype);
-    this.name = "TimeoutError";
-    this.url = url;
-    this.timeout = timeout;
+    Object.setPrototypeOf(this, TimeoutError.prototype)
+    this.name = "TimeoutError"
+    this.url = url
+    this.timeout = timeout
   }
 }
 
 export class CanceledError extends Error {
   constructor() {
-    super();
-    Object.setPrototypeOf(this, CanceledError.prototype);
-    this.name = "CanceledError";
+    super()
+    Object.setPrototypeOf(this, CanceledError.prototype)
+    this.name = "CanceledError"
   }
 }
 
 type Config<T extends ResponseType> = {
-  url: string;
-  method?: Method;
-  type: T;
-  body?: BodyInit | null;
-  headers?: Record<string, string>;
-  credentials?: RequestCredentials;
-  timeout?: number;
-  cache?: RequestCache;
-  integrity?: string;
-  keepalive?: boolean;
-  mode?: RequestMode;
-  priority?: RequestPriority;
-  redirect?: RequestRedirect;
-  referrer?: string;
-  referrerPolicy?: ReferrerPolicy;
-  window?: null;
-};
+  url: string
+  method?: Method
+  type: T
+  body?: BodyInit | null
+  headers?: Record<string, string>
+  credentials?: RequestCredentials
+  timeout?: number
+  cache?: RequestCache
+  integrity?: string
+  keepalive?: boolean
+  mode?: RequestMode
+  priority?: RequestPriority
+  redirect?: RequestRedirect
+  referrer?: string
+  referrerPolicy?: ReferrerPolicy
+  window?: null
+}
 
 export type Response<T> = {
-  status: number;
-  ok: boolean;
-  response: Option<T>;
-  url: string;
-  headers: Headers;
-};
+  status: number
+  ok: boolean
+  response: Option<T>
+  url: string
+  headers: Headers
+}
 
-const resolvedPromise = Promise.resolve();
+const resolvedPromise = Promise.resolve()
 
 const make = <T extends ResponseType>({
   url,
@@ -98,12 +98,12 @@ const make = <T extends ResponseType>({
   return Future.make<
     Result<Response<ResponseTypeMap[T]>, NetworkError | TimeoutError>
   >((resolve) => {
-    const controller = new AbortController();
+    const controller = new AbortController()
 
     if (timeout) {
       setTimeout(() => {
-        controller.abort(new TimeoutError(url, timeout));
-      }, timeout);
+        controller.abort(new TimeoutError(url, timeout))
+      }, timeout)
     }
 
     const init = async () => {
@@ -122,24 +122,24 @@ const make = <T extends ResponseType>({
         referrer,
         referrerPolicy,
         window,
-      });
+      })
 
-      let payload;
+      let payload
       try {
         if (type === "arraybuffer") {
-          payload = Option.Some(await res.arrayBuffer());
+          payload = Option.Some(await res.arrayBuffer())
         }
         if (type === "blob") {
-          payload = Option.Some(await res.blob());
+          payload = Option.Some(await res.blob())
         }
         if (type === "json") {
-          payload = Option.Some(await res.json());
+          payload = Option.Some(await res.json())
         }
         if (type === "text") {
-          payload = Option.Some(await res.text());
+          payload = Option.Some(await res.text())
         }
       } catch {
-        payload = Option.None();
+        payload = Option.None()
       }
 
       const response: Response<ResponseTypeMap[T]> = {
@@ -148,42 +148,42 @@ const make = <T extends ResponseType>({
         ok: res.ok,
         headers: res.headers,
         response: payload as Option<ResponseTypeMap[T]>,
-      };
-      return response;
-    };
+      }
+      return response
+    }
 
     init().then(
       (response) => resolve(Result.Ok(response)),
       (error) => {
         if (error instanceof CanceledError) {
-          return resolvedPromise;
+          return resolvedPromise
         }
         if (error instanceof TimeoutError) {
-          resolve(Result.Error(error));
-          return resolvedPromise;
+          resolve(Result.Error(error))
+          return resolvedPromise
         }
-        resolve(Result.Error(new NetworkError(url)));
-        return resolvedPromise;
+        resolve(Result.Error(new NetworkError(url)))
+        return resolvedPromise
       },
-    );
+    )
 
     return () => {
-      controller.abort(new CanceledError());
-    };
-  });
-};
+      controller.abort(new CanceledError())
+    }
+  })
+}
 
 export class BadStatusError extends Error {
-  url: string;
-  status: number;
-  response: unknown;
+  url: string
+  status: number
+  response: unknown
   constructor(url: string, status: number, response?: unknown) {
-    super(`Request to ${url} gave status ${status}`);
-    Object.setPrototypeOf(this, BadStatusError.prototype);
-    this.name = "BadStatusError";
-    this.url = url;
-    this.status = status;
-    this.response = response;
+    super(`Request to ${url} gave status ${status}`)
+    Object.setPrototypeOf(this, BadStatusError.prototype)
+    this.name = "BadStatusError"
+    this.url = url
+    this.status = status
+    this.response = response
   }
 }
 
@@ -198,23 +198,23 @@ export const badStatusToError = <T>(
           response.status,
           response.response.toUndefined(),
         ),
-      );
-};
+      )
+}
 
 export class EmptyResponseError extends Error {
-  url: string;
+  url: string
   constructor(url: string) {
-    super(`Request to ${url} gave an empty response`);
-    Object.setPrototypeOf(this, EmptyResponseError.prototype);
-    this.name = "EmptyResponseError";
-    this.url = url;
+    super(`Request to ${url} gave an empty response`)
+    Object.setPrototypeOf(this, EmptyResponseError.prototype)
+    this.name = "EmptyResponseError"
+    this.url = url
   }
 }
 
 export const emptyToError = <T>(response: Response<T>) => {
-  return response.response.toResult(new EmptyResponseError(response.url));
-};
+  return response.response.toResult(new EmptyResponseError(response.url))
+}
 
 export const Request = {
   make,
-};
+}

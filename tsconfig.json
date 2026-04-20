@@ -1,30 +1,23 @@
 {
-  "include": ["src"],
+  "include": ["src", "test"],
   "compilerOptions": {
-    "module": "ESNext",
-    "target": "ES2018",
-    "lib": ["DOM", "DOM.Iterable", "ES2018"],
-    "moduleResolution": "Node",
+    "module": "esnext",
+    "target": "ES2015",
+    "lib": ["DOM", "DOM.Iterable", "ES2021"],
+    "rootDir": "./",
     "outDir": "dist/",
+    "types": ["bun"],
 
     "allowJs": false,
     "declaration": true,
-    "noEmit": true,
+    "esModuleInterop": true,
     "sourceMap": true,
-    "strict": true,
     "skipLibCheck": true,
+    "strict": true,
     "stripInternal": true,
 
-    // https://www.typescriptlang.org/tsconfig#Type_Checking_6248
-    "allowUnreachableCode": false,
-    "allowUnusedLabels": false,
-    "exactOptionalPropertyTypes": false,
     "noFallthroughCasesInSwitch": true,
-    "noImplicitOverride": true,
-    "noImplicitReturns": false,
-    "noPropertyAccessFromIndexSignature": true,
     "noUncheckedIndexedAccess": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true
+    "forceConsistentCasingInFileNames": true
   }
 }
