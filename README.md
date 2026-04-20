@@ -1,24 +1,24 @@
-<img width="108" alt="@swan-io/request logo" src="https://github.com/swan-io/request/blob/main/logo.svg?raw=true">
+<img width="108" alt="@bloodyowl/request logo" src="https://github.com/bloodyowl/request/blob/main/logo.svg?raw=true">
 
-# @swan-io/request
+# @bloodyowl/request
 
-[![mit licence](https://img.shields.io/dub/l/vibe-d.svg?style=for-the-badge)](https://github.com/swan-io/request/blob/main/LICENSE)
-[![npm version](https://img.shields.io/npm/v/@swan-io/request?style=for-the-badge)](https://www.npmjs.org/package/@swan-io/request)
-[![bundlephobia](https://img.shields.io/bundlephobia/minzip/@swan-io/request?label=size&style=for-the-badge)](https://bundlephobia.com/result?p=@swan-io/request)
+[![mit licence](https://img.shields.io/dub/l/vibe-d.svg?style=for-the-badge)](https://github.com/bloodyowl/request/blob/main/LICENSE)
+[![npm version](https://img.shields.io/npm/v/@bloodyowl/request?style=for-the-badge)](https://www.npmjs.org/package/@bloodyowl/request)
+[![bundlephobia](https://img.shields.io/bundlephobia/minzip/@bloodyowl/request?label=size&style=for-the-badge)](https://bundlephobia.com/result?p=@bloodyowl/request)
 
 > Wrapper for fetch with better data-structures
 
 ## Installation
 
 ```bash
-$ yarn add @swan-io/request @swan-io/boxed
+$ yarn add @bloodyowl/request @bloodyowl/boxed
 # --- or ---
-$ npm install --save @swan-io/request @swan-io/boxed
+$ npm install --save @bloodyowl/request @bloodyowl/boxed
 ```
 
 ## Design principles
 
-- Has a **strong contract** with data-structures from [Boxed](https://swan-io.github.io/boxed/) (`Future`, `Result` & `Option`)
+- Has a **strong contract** with data-structures from [Boxed](https://boxed.cool/) (`Future`, `Result` & `Option`)
 - Makes the request **easily cancellable** with `Future` API
 - Gives **freedom of interpretation for response status**
 - Handles **timeouts**
@@ -27,7 +27,7 @@ $ npm install --save @swan-io/request @swan-io/boxed
 ## Getting started
 
 ```ts
-import { Request, badStatusToError, emptyToError } from "@swan-io/request"
+import { Request, badStatusToError, emptyToError } from "@bloodyowl/request"
 
 // Regular case
 Request.make({ url: "/api/health", type: "text" }).onResolve(console.log)
